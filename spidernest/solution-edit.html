@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<!--(C) 2018 netqon.com all rights reserved.-->
+<head>
+    <meta charset="UTF-8">
+    <title>方案属性</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <script>if (typeof module === 'object') {
+        window.module = module;
+        module = undefined;
+    }</script>
+    <link href="libs/iconfont.css" rel="stylesheet"/>
+    <script src="libs/jquery.js"></script>
+    <script type="text/javascript" src="libs/bootstrap.js"></script>
+    <link rel="stylesheet" href="libs/bootstrap.css"/>
+
+    <script>if (window.module) module = window.module;</script>
+
+    <script src="solution-edit.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <div>
+        <div class="form-group">
+            <label for="solution_id">ID</label>
+            <input type="text" class="form-control" id="solution_id" aria-describedby="help_id" placeholder="UUID"
+                   disabled>
+            <small id="help_id" class="form-text text-muted">ID是方案的唯一标识，自动生成，不可修改。</small>
+        </div>
+        <div class="form-group">
+            <label for="solution_name">名称</label>
+            <input type="text" class="form-control" id="solution_name" aria-describedby="help_name"
+                   placeholder="例如：获取豆瓣电影评论">
+            <small id="help_name" class="form-text text-muted">必填</small>
+        </div>
+
+        <div class="form-group">
+            <label for="solution_desc">概要</label>
+            <input type="text" class="form-control" id="solution_desc" aria-describedby="htlp_desc"
+                   placeholder="例如：定时获取最新的电影评论的文章和评论组合">
+            <small id="htlp_desc" class="form-text text-muted">对该方案的简要描述文字，可选的</small>
+        </div>
+        <div class="form-group">
+            <label for="solution_web">网站</label>
+            <input type="text" class="form-control" id="solution_web" aria-describedby="help_web"
+                   placeholder="例如：https://github.com/fateleak/spidernest">
+            <small id="help_web" class="form-text text-muted">关联的网站地址，任意的，可选的</small>
+        </div>
+        <div class="form-group">
+            <label for="solution_version">版本</label>
+            <input type="number" class="form-control" id="solution_version" aria-describedby="help_version"
+                   placeholder="例如：1" value="1">
+            <small id="help_version" class="form-text text-muted">使用正整数的版本号，不使用语义化。发布新版本到市场时请递增版本号。</small>
+        </div>
+        <button class="btn btn-secondary" onclick="window.close();">取消</button>
+        <button id="btn_save" class="btn btn-primary">保存</button>
+    </div>
+</div>
+</body>
+
+</html>

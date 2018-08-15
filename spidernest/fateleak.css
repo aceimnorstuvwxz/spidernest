@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    font-size: 14px;
+}
+
+a{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+
+.drag{
+    -webkit-app-region: drag;
+}
+
+.container{
+    margin: 20px;
+}
+
+.flex-push{
+    flex-grow: 1;
+}
+
+.label-1{
+    font-size: 14px;
+}
+
+.label-2{
+    font-size: 12px;
+}
+
+.bg-hover:hover{
+    background-color: antiquewhite;
+    border-radius: 3px;
+}
+
+.bg-hover:active{
+    background-color: rgb(255, 212, 157);
+    border-radius: 3px;
+}
+
+.text-ul-hover:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.text-ul-hover:active{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.panel{
+    border: 1px solid rgb(143, 143, 143);
+    background-color: rgb(194, 255, 155);
+    margin: 10px 20px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.panel-error{
+    background-color: rgb(255, 155, 157);
+}
+
+.input-style-1{
+    outline: none;
+    border: none;
+    padding-bottom: 3px;
+    border-bottom: solid 1px #666;
+    color: #333;
+    border-radius: 3px;
+    padding-left: 5px;
+}
+
+.input-style-1:focus{
+    border-bottom: solid 1px #000;
+}
+
+.input-size-1{
+    font-size: 20px;
+}
+
+.input-size-2{
+    font-size: 14px;
+}
+
+.input-size-3{
+    font-size: 12px;
+}
+
+.button{
+    font-size: 14px;
+    color: #666;
+    border: 1px solid #999;
+    background-color: #fff;
+    padding: 2px 5px;
+    outline: none;
+    border-radius: 3px;
+    margin: 2px 5px;
+    cursor: pointer;
+}
+
+.button:hover{
+    background-color: rgb(163, 255, 132);
+}
+
+.button:active{
+    background-color: rgb(120, 247, 78);
+}
+
+.btn-size-big{
+    padding: 6px 20px;
+}
+
+.row{
+    margin: 10px 5px;
+}
+
+.row-center{
+    text-align: center;
+}
+
+.row-margin-1{
+    margin-left: 2em;
+}
+
+.row-margin-2{
+    margin-left: 3em;
+}
+
+textarea{
+    border-radius: 5px;
+    padding: 3px;
+}

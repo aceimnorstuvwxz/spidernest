@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!-- (C)2018 netqon.com all rights reserved. -->
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Netqon SpirderNest</title>
+
+    <script>if (typeof module === 'object') {
+        window.module = module;
+        module = undefined;
+    }</script>
+    <link href="libs/iconfont.css" rel="stylesheet"/>
+    <script src="libs/jquery.js"></script>
+    <script type="text/javascript" src="libs/bootstrap.js"></script>
+    <link rel="stylesheet" href="libs/bootstrap.css"/>
+    <script src="libs/jquery.scrollTo.min.js"></script>
+
+    <script>if (window.module) module = window.module;</script>
+
+    <link rel="stylesheet" type="text/css" href="index.css">
+
+</head>
+
+<body>
+<header id="window_header" class="drag">
+    <div id="head_folder" class="head_segments">
+
+        <a class="btn-head" id="btn_open_settings" title="Setting" title-cn="设置">
+            <i class="iconfont icon-settings btn-head-icon"></i>
+        </a>
+        <a class="btn-head" id="btn_add_solution" title="New solution" title-cn="新建方案">
+            <i class="iconfont icon-plus btn-head-icon"></i>
+        </a>
+    </div>
+    <div id="head_list" class="head_segments">
+        <div class="flex-push"></div>
+
+        <a class="btn-head" id="btn_add_module" title="New Module" title-cn="新建模块">
+            <i class="iconfont icon-plus btn-head-icon"></i>
+        </a>
+    </div>
+
+    <div id="head_edit" class="head_segments">
+        <div class="head-block" id="head_module_id">module-id</div>
+        <div class="head-block" ><input type="text" id="input_module_name" ></input> </div>
+
+        <div class="flex-push"></div>
+        <div class="head-tab" pressed="true" tab-name="codeout">基础代码[F1]</div>
+        <div class="head-tab" pressed="true" tab-name="codein">嵌入代码[F2]</div>
+        <div class="head-tab" pressed="true" tab-name="doc">模块文档[F3]</div>
+        <div class="flex-push"></div>
+        <a class="btn-head" id="btn_module_save" title="Save" title-cn="保存">
+            <i class="iconfont icon-contentsave btn-head-icon"></i>[F4]
+        </a>
+        <a class="btn-head" id="btn_module_play" title="Play" title-cn="运行">
+            <i class="iconfont icon-play btn-head-icon"></i>[F5]
+        </a>
+    </div>
+</header>
+<!-- head end -->
+<main id="total">
+
+    <!-- solutions -->
+    <div id="solution_space">
+
+        <div id="solution_list">
+
+        </div>
+        <div id="fill_solution_space">
+
+        </div>
+    </div>
+    <!-- solution space end -->
+
+    <!--<div id="help_space">-->
+    <!--<webview>-->
+
+    <!--</webview>-->
+    <!--</div>-->
+    <div id="module_space">
+        <div id="module_list">
+        </div>
+    </div>
+
+
+    <div id="content_space">
+        <!--<div id="content_head">-->
+        <!--<div class="head-tab" pressed="true" tab-name="codeout">基础代码[F1]</div>-->
+        <!--<div class="flex-push"></div>-->
+        <!--<div class="head-tab" pressed="true" tab-name="codein">嵌入代码[F2]</div>-->
+        <!--<div class="flex-push"></div>-->
+        <!--<div class="head-tab" pressed="true" tab-name="doc">模块文档[F3]</div>-->
+        <!--</div>-->
+        <!--<div id="content_list"></div>-->
+        <div class="editor" id="editor_codeout"></div>
+        <div class="editor" id="editor_codein"></div>
+        <div class="editor" id="editor_doc"></div>
+
+    </div>
+
+</main>
+
+<div class="template">
+    <div class="module" id="module_template">
+        <div class="module-header">
+            <div class="module-name">module name</div>
+        </div>
+
+        <div class="module-footer">
+            <div class="module-id">module-id</div>
+        </div>
+    </div>
+
+    <div class="solution" id="solution_template">
+            <div class="solution-name-line">
+                <div class="solution-name-wraper">
+                    <span class="solution-name">MacRumors</span>
+                </div>
+                <div class="flex-push"></div>
+            </div>
+            <div class="solution-desc">
+                http://www.macrumors.com/index.html
+            </div>
+
+    </div>
+
+    <script>
+        var nodeRequire = global.require;
+    </script>
+    <script src="node_modules/monaco-editor/min/vs/loader.js"></script>
+    <script>
+        var amdRequire = global.require;
+        global.require = nodeRequire;
+
+        var path = require('path');
+
+        function uriFromPath(_path) {
+            var pathName = path.resolve(_path).replace(/\\/g, '/');
+            if (pathName.length > 0 && pathName.charAt(0) !== '/') {
+                pathName = '/' + pathName;
+            }
+            return encodeURI('file://' + pathName);
+        }
+
+        amdRequire.config({
+            baseUrl: uriFromPath(path.join(__dirname, 'node_modules/monaco-editor/min'))
+        });
+        self.module = undefined;
+        self.process.browser = true;
+    </script>
+
+    <script>
+        require('./index.js')
+    </script>
+
+    <!--https://github.com/Microsoft/monaco-editor/issues/90  参考langedit-->
+</div>
+</body>
+
+</html>
