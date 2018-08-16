@@ -5,8 +5,8 @@ const path = require('path');
 const locale = require('./locale');
 const utils = require('./utils');
 const moment = require('moment');
-const {remote} = require('electron');
-const {Menu, MenuItem} = remote;
+const { remote } = require('electron');
+const { Menu, MenuItem } = remote;
 const Store = require('electron-store');
 const store = new Store();
 const uuidgen = require('uuid/v4');
@@ -65,7 +65,7 @@ function onModuleLoaded() {
 
 let g_dirty = false
 function on_editor_inited() {
-    g_editor_queue.forEach(editor=>{
+    g_editor_queue.forEach(editor => {
         editor.getModel().onDidChangeContent(function (e) {
 
             if (g_selected_module_element == null) {
@@ -81,7 +81,7 @@ function on_editor_inited() {
 }
 
 function refresh_save_dirty() {
-    $('#btn_module_save').attr('dirty', g_dirty ? 'true':'false')
+    $('#btn_module_save').attr('dirty', g_dirty ? 'true' : 'false')
 }
 
 function update_editor_layout() {
@@ -93,7 +93,7 @@ function update_editor_layout() {
     //below way, will cause too many time, so the screen will flash white
     // let w = (window.innerWidth - $('#record_space').width - $('#target_space').width - $('#side').width)/2
 
-    g_editor_queue.forEach(editor=>{
+    g_editor_queue.forEach(editor => {
         editor.layout({ width: editor_width, height: window.innerHeight - 30 })
     })
 }
@@ -187,7 +187,7 @@ function add_new_solution_element(solution, root = false) {
             click: on_click_config_solution.bind(null, new_element)
         }))
 
-        menu.popup({window: remote.getCurrentWindow()})
+        menu.popup({ window: remote.getCurrentWindow() })
     })
 
 }
@@ -201,7 +201,7 @@ function send_cmd(data) {
 }
 
 function on_click_check_immediately(solution_element) {
-    send_cmd({'cmd': 'check-immediately', data: solution_element.web_solution.id})
+    send_cmd({ 'cmd': 'check-immediately', data: solution_element.web_solution.id })
 }
 
 let g_under_removing_solution_element = null
@@ -213,14 +213,13 @@ function on_click_remove_solution(solution_element) {
 }
 
 function on_click_remove_module(module_element) {
-    var r=confirm(`删除模块 ${module_element.web_module.name} ?`)
-    if (r==true)
-    {
-      electron.ipcRenderer.send('remove-module', module_element.web_module.id)
+    var r = confirm(`删除模块 ${module_element.web_module.name} ?`)
+    if (r == true) {
+        electron.ipcRenderer.send('remove-module', module_element.web_module.id)
     }
 }
 
-electron.ipcRenderer.on("remove-module", (e, module_id)=>{
+electron.ipcRenderer.on("remove-module", (e, module_id) => {
     g_module_map[module_id].remove()
     delete g_module_map[module_id]
 })
@@ -337,7 +336,7 @@ function on_select_solution(solution_id) {
     $('#module_list').empty()
     g_module_map = {}
 
-    electron.ipcRenderer.send('get-all-modules',solution.id)
+    electron.ipcRenderer.send('get-all-modules', solution.id)
 }
 
 function unselect_solution() {
@@ -416,7 +415,7 @@ function add_new_module_element(module, at_top = false) {
             click: on_click_remove_module.bind(null, new_element)
         }))
 
-        menu.popup({window: remote.getCurrentWindow()})
+        menu.popup({ window: remote.getCurrentWindow() })
     })
 }
 
@@ -450,20 +449,24 @@ function on_select_module(module_id) {
     refresh_save_dirty()
 }
 
-function  on_click_save_module() {
+function on_click_save_module() {
     console.log('save module')
-    if (g_dirty) {
-        g_dirty = false
-        refresh_save_dirty()
+    if (g_selected_module_element) {
+        if (g_dirty) {
+            g_dirty = false
+            refresh_save_dirty()
 
-        let module = g_selected_module_element.web_module
-        module.name = $('#input_module_name').val()
-        module.doc = g_editor_doc.getValue()
-        module.codein = g_editor_codein.getValue()
-        module.codeout = g_editor_codeout.getValue()
-        g_selected_module_element.find('.module-name').text(module.name)
+            let module = g_selected_module_element.web_module
+            module.name = $('#input_module_name').val()
+            module.doc = g_editor_doc.getValue()
+            module.codein = g_editor_codein.getValue()
+            module.codeout = g_editor_codeout.getValue()
+            g_selected_module_element.find('.module-name').text(module.name)
 
-        electron.ipcRenderer.send('update-module', module)
+            electron.ipcRenderer.send('update-module', module)
+        }
+    } else {
+        alert('没有选中任何模块')
     }
 }
 
@@ -477,6 +480,8 @@ function on_module_name_change() {
 function on_click_play_module() {
     if (g_selected_module_element) {
         electron.ipcRenderer.send('play-module', g_selected_module_element.web_module.id)
+    } else {
+        alert('没有选中任何模块')
     }
 }
 
