@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>worker</title>
+  <script type="text/javascript" src="libs/jquery.js" onload="window.$ = window.jQuery = module.exports;"></script>
+  <script src="worker.js"></script>
+</head>
+
+<body>
+  <style>
+    html, body{
+      margin: 0px;
+      padding: 0px;
+    }
+    #total{
+      display: grid;
+      grid-template-rows: 30px 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    header{
+      display: flex;
+      background: rgb(250, 197, 255);
+      border: 1px solid #333;
+    }
+
+    header>span{
+      padding: 5px;
+      margin: 0px 5px;
+    }
+
+    footer{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .log-area{
+      border: 1px solid #333;
+    }
+
+    .log-area-head{
+      padding-left: 15px;
+      background: rgb(250, 197, 255);
+    }
+
+    .log-area-content{
+      padding: 5px;
+      padding-left: 15px;
+    }
+  </style>
+  <div id="total">
+    <header>
+      <span id="module_name">test module abc</span><span id="module_id">123456ABC</span>
+    </header>
+    <div id="web_list">
+      web list
+    </div>
+    <footer>
+      <div id="log_out" class="log-area">
+        <div class="log-area-head">外部Log</div>
+        <div class="log-area-content">
+            out log
+        </div>
+      </div>
+      <div id="log_in" class="log-area" style="border-left: none;">
+        <div class="log-area-head">内部Log</div>
+        <div class="log-area-content">
+            inner log
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+
+</html>

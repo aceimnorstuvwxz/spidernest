@@ -1,6 +1,5 @@
 // (C) 2018 netqon.com all rights reserved.
 
-const jsonfile = require('jsonfile');
 const electron = require('electron');
 const path = require('path');
 const locale = require('./locale');
@@ -10,7 +9,6 @@ const {remote} = require('electron');
 const {Menu, MenuItem} = remote;
 const Store = require('electron-store');
 const store = new Store();
-const htmlencode = require('htmlencode');
 const uuidgen = require('uuid/v4');
 
 
