@@ -462,12 +462,36 @@ ipcMain.on('get-module-to-play', (e, worker_id) => {
         let module_id = g_wait_to_play_module_queue[0]
         g_wait_to_play_module_queue.shift()
         db.db_get_module(module_id, (module)=>{
+            dump_module_preload(module)
             main_utils.notify_all_windows('module-to-play', {module: module, worker_id: worker_id})
         })
     } else {
         main_utils.notify_all_windows('module-to-play', {module: null, worker_id: worker_id})
     }
 })
+
+//module_preload的前置代码
+let g_module_preload_preset_code = `
+console.log('this is preload preset code')
+window._irr_raw_log = window.console.log
+window.console.log = (...args)=>{
+    window._irr_raw_log(args.join(','))
+}
+
+console.log('this is preload preset code', 'second  param')
+`
+function dump_module_preload(module) {
+
+    let preload_dir = path.join(utils.get_userData(), 'module_preloads')
+
+    if (!fs.existsSync(preload_dir)){
+        fs.mkdirSync(preload_dir);
+    }
+
+    let preload_fn = path.join(preload_dir, module.id + '.js')
+    console.log("dump preload, ", preload_fn)
+    fs.writeFileSync(preload_fn, g_module_preload_preset_code + module.codein)
+}
 
 let g_module_window_map = {}
 

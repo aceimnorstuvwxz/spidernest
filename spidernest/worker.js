@@ -87,15 +87,15 @@ function init_after_get_module() {
     $('#module_id').text(g_module.id.slice(0, 8))
 
     log_out('获得', g_module.name)
-    _irr.eval(`_sn_out.load_new_webview()`)
+    _irr.eval(g_module.codeout)
 }
 
 //想外部代码释放的接口
 window._sn_out = {} //spider nest out API hub
-_sn_out.load_new_webview = () => {
+_snapi.load_new_webview = () => {
     console.log('load new webview')
     let prelaod_fn = urllib.format({
-        pathname: path.join(utils.get_userData(), 'module_preloads', 'test.js'),
+        pathname: path.join(utils.get_userData(), 'module_preloads', g_module.id + '.js'),
         protocol: 'file:',
         slashes: true
     })
@@ -119,7 +119,7 @@ _sn_out.load_new_webview = () => {
     // web_raw.addEventListener('dom-ready', function () {
     //     console.log('dom ready')
     // })
-    web_raw.addEventListener('console-message', (e) => {           
+    web_raw.addEventListener('console-message', (e) => {
          _irr.raw_log(e)
 
         if (!e.message.includes('Electron Security Warning')) {
