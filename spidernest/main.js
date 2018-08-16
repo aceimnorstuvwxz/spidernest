@@ -456,6 +456,19 @@ ipcMain.on('play-module', (e, module_id) => {
     openNewModuleWindow()
 })
 
+ipcMain.on('get-module-to-play', (e, worker_id) => {
+    console.log("queue state before", g_wait_to_play_module_queue)
+    if (g_wait_to_play_module_queue.length > 0) {
+        let module_id = g_wait_to_play_module_queue[0]
+        g_wait_to_play_module_queue.shift()
+        db.db_get_module(module_id, (module)=>{
+            main_utils.notify_all_windows('module-to-play', {module: module, worker_id: worker_id})
+        })
+    } else {
+        main_utils.notify_all_windows('module-to-play', {module: null, worker_id: worker_id})
+    }
+})
+
 let g_module_window_map = {}
 
 function openNewModuleWindow() {
