@@ -119,17 +119,6 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#btn_remove_solution_confirm').click(on_click_remove_solution_confirm)
     $('#btn_delete_modules_confirm').click(on_click_delete_modules_confirm)
 
-    $('#btn_open_snapshot').click(on_click_open_snapshot)
-    $('#btn_open_origin').click(on_click_open_origin)
-
-    $('#fill_solution_space').contextmenu(function (e) {
-        e.preventDefault()
-        const menu = new Menu()
-        menu.append(new MenuItem({label: 'New solution', click: on_click_new_solution, accelerator: 'CmdOrCtrl+N'}))
-        menu.popup({window: remote.getCurrentWindow()})
-    })
-
-
     $('#btn_open_settings').click(function () {
         electron.ipcRenderer.send('open-settings')
     })
@@ -141,6 +130,8 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#btn_module_save').click(on_click_save_module)
 
     $('#input_module_name').keydown(on_module_name_change)
+
+    $('#btn_module_play').click(on_click_play_module)
 })
 
 function on_click_head_tab(event) {
@@ -483,35 +474,9 @@ function on_module_name_change() {
     }
 }
 
-
-function on_click_open_snapshot() {
+function on_click_play_module() {
     if (g_selected_module_element) {
-        electron.ipcRenderer.send('open-snapshot', g_selected_module_element.web_module.id)
+        electron.ipcRenderer.send('play-module', g_selected_module_element.web_module.id)
     }
 }
 
-function on_click_open_origin() {
-    if (g_selected_module_element) {
-        let addr = g_solution_map[g_selected_module_element.web_module.solution_id].web_solution.desc
-        electron.remote.shell.openExternal(addr)
-    }
-}
-
-electron.ipcRenderer.on('cmd', function (e, data) {
-    if (data == 'open-new-solution') {
-        on_click_new_solution()
-    }
-})
-
-
-
-electron.ipcRenderer.on('solution-checking-state', (e, data) => {
-    console.log(data)
-
-    let element = g_solution_map[data.solution_id]
-    if (data.checking) {
-        element.find('.solution-desc').text(utils.lg('检查中...', 'Checking...'))
-    } else {
-        element.find('.solution-desc').text(element.web_solution.desc)
-    }
-})

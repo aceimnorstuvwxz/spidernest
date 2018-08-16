@@ -1,7 +1,7 @@
 // (C) 2018 netqon.com all rights reserved.
 
 const electron = require('electron')
-const {app, BrowserWindow, Menu, ipcMain, globalShortcut, crashReporter} = electron;
+const { app, BrowserWindow, Menu, ipcMain, globalShortcut, crashReporter } = electron;
 const utils = require('./utils')
 const uuidgen = require('uuid/v4');
 const main_utils = require('./main_utils')
@@ -77,13 +77,13 @@ function get_menu_template() {
         {
             label: lg('编辑', 'Edit'),
             submenu: [
-                {role: 'undo', label: lg('撤销', 'Undo')},
-                {role: 'redo', label: lg('恢复', 'Redo')},
-                {type: 'separator'},
-                {role: 'cut', label: lg('剪切', 'Cut')},
-                {role: 'copy', label: lg('复制', 'Copy')},
-                {role: 'paste', label: lg('粘贴', 'Paste')},
-                {role: 'selectall', label: lg('全选', 'Select All')}
+                { role: 'undo', label: lg('撤销', 'Undo') },
+                { role: 'redo', label: lg('恢复', 'Redo') },
+                { type: 'separator' },
+                { role: 'cut', label: lg('剪切', 'Cut') },
+                { role: 'copy', label: lg('复制', 'Copy') },
+                { role: 'paste', label: lg('粘贴', 'Paste') },
+                { role: 'selectall', label: lg('全选', 'Select All') }
             ]
         },
         {
@@ -93,19 +93,19 @@ function get_menu_template() {
                 // {role: 'forcereload'},
                 // {role: 'toggledevtools'},
                 // {type: 'separator'},
-                {role: 'zoomin', label: lg('放大', 'Zoom In')},
-                {role: 'zoomout', label: lg('缩小', 'Zoom Out')},
-                {role: 'resetzoom', label: lg('重置缩放', 'Reset Zoom')},
-                {type: 'separator'},
-                {role: 'togglefullscreen', label: lg('切换全屏', 'Toggle Fun Screen')}
+                { role: 'zoomin', label: lg('放大', 'Zoom In') },
+                { role: 'zoomout', label: lg('缩小', 'Zoom Out') },
+                { role: 'resetzoom', label: lg('重置缩放', 'Reset Zoom') },
+                { type: 'separator' },
+                { role: 'togglefullscreen', label: lg('切换全屏', 'Toggle Fun Screen') }
             ]
         },
         {
             role: 'window',
             label: lg('窗口', 'Window'),
             submenu: [
-                {role: 'minimize', label: lg('最小化', 'Minimize')},
-                {role: 'close', label: lg('关闭', 'Close')}
+                { role: 'minimize', label: lg('最小化', 'Minimize') },
+                { role: 'close', label: lg('关闭', 'Close') }
             ]
         },
         {
@@ -115,7 +115,7 @@ function get_menu_template() {
                 {
                     label: lg('反馈', 'Feedback'),
                     click() {
-                        require('electron').shell.openExternal('https://github.com/fateleak/openwebmonitor')
+                        require('electron').shell.openExternal('https://github.com/fateleak/spidernest')
                     }
                 },
                 {
@@ -124,11 +124,11 @@ function get_menu_template() {
                         openCheckUpdateWindow()
                     }
                 },
-                {type: 'separator'},
+                { type: 'separator' },
                 {
                     label: lg('了解更多', 'Learn More'),
                     click() {
-                        require('electron').shell.openExternal('http://openwebmonitor.netqon.com')
+                        require('electron').shell.openExternal('http://spidernest.netqon.com')
                     }
                 }
             ]
@@ -140,8 +140,8 @@ function get_menu_template() {
         menuTemplate.unshift({
             label: app.getName(),
             submenu: [
-                {role: 'about', label: lg('关于 OpenWebMonitor', 'About OpenWebMonitor')},
-                {type: 'separator'},
+                { role: 'about', label: lg('关于 spidernest', 'About spidernest') },
+                { type: 'separator' },
                 {
                     label: lg('偏好设置', 'Preferences'),
                     accelerator: 'CommandOrControl+,',
@@ -149,23 +149,23 @@ function get_menu_template() {
                         createSettingWindow()
                     }
                 },
-                {role: 'services', label: lg('服务', 'Services'), submenu: []},
-                {type: 'separator'},
-                {role: 'hide', label: lg('隐藏 OpenWebMonitor', 'Hide OpenWebMonitor')},
-                {role: 'hideothers', label: lg('隐藏其它', 'Hide Others')},
-                {role: 'unhide', label: lg('显示全部', 'Show All')},
-                {type: 'separator'},
-                {role: 'quit', lable: lg('退出', 'Quit')}
+                { role: 'services', label: lg('服务', 'Services'), submenu: [] },
+                { type: 'separator' },
+                { role: 'hide', label: lg('隐藏 spidernest', 'Hide spidernest') },
+                { role: 'hideothers', label: lg('隐藏其它', 'Hide Others') },
+                { role: 'unhide', label: lg('显示全部', 'Show All') },
+                { type: 'separator' },
+                { role: 'quit', lable: lg('退出', 'Quit') }
             ]
         })
 
         // mac's Window menu
         menuTemplate[4].submenu = [
-            {role: 'close', label: lg('关闭', 'Close')},
-            {role: 'minimize', label: lg('最小化', 'Minimize')},
-            {role: 'zoom', label: lg('缩放', 'Zoom')},
-            {type: 'separator'},
-            {role: 'front', label: lg('全部置于顶层', 'Bring All to Front')}
+            { role: 'close', label: lg('关闭', 'Close') },
+            { role: 'minimize', label: lg('最小化', 'Minimize') },
+            { role: 'zoom', label: lg('缩放', 'Zoom') },
+            { type: 'separator' },
+            { role: 'front', label: lg('全部置于顶层', 'Bring All to Front') }
         ]
     } else {
         //For Win32, add settings and Exit
@@ -181,7 +181,7 @@ function get_menu_template() {
         )
 
         menuTemplate[0].submenu.push(
-            {type: 'separator'}
+            { type: 'separator' }
         )
         menuTemplate[0].submenu.push(
             {
@@ -194,7 +194,7 @@ function get_menu_template() {
         menuTemplate[4].submenu.unshift(
             {
                 role: 'about',
-                label: lg('关于 OpenWebMonitor', 'About OpenWebMonitor'),
+                label: lg('关于 spidernest', 'About spidernest'),
                 click() {
                     openAboutWindow()
                 }
@@ -206,9 +206,9 @@ function get_menu_template() {
         menuTemplate.push({
             label: 'Dev',
             submenu: [
-                {role: 'reload'},
-                {role: 'forcereload'},
-                {role: 'toggledevtools'},
+                { role: 'reload' },
+                { role: 'forcereload' },
+                { role: 'toggledevtools' },
                 {
                     label: 'test crash',
                     click() {
@@ -297,7 +297,7 @@ function openAboutWindow() {
         aboutWindow.show()
     } else {
         aboutWindow = new BrowserWindow({
-            webPreferences: {webSecurity: false},
+            webPreferences: { webSecurity: false },
             width: 300,
             height: 500
         })
@@ -448,3 +448,39 @@ ipcMain.on('get-solution-to-edit', (e) => {
     }
 })
 
+// module 运行窗口
+
+let g_wait_to_play_module_queue = []
+ipcMain.on('play-module', (e, module_id) => {
+    g_wait_to_play_module_queue.push(module_id)
+    openNewModuleWindow()
+})
+
+let g_module_window_map = {}
+
+function openNewModuleWindow() {
+
+    let win_option = {
+        width: 700,
+        height: 700
+    }
+
+    let tmp_win = new BrowserWindow(win_option)
+
+    tmp_win.loadURL(urllib.format({
+        pathname: path.join(__dirname, 'worker.html'),
+        protocol: 'file:',
+        slashes: true
+    }))
+
+    tmp_win.setResizable(true)        
+    tmp_win.setMenu(null)
+
+    tmp_win.on('closed', function () {
+    })
+
+    tmp_win.webContents.on('new-window', function (event, url) {
+        event.preventDefault();
+        electron.shell.openExternal(url)
+    })
+}

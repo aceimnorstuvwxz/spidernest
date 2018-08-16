@@ -1,6 +1,5 @@
 const electron = require('electron');
 const utils = require('./utils')
-const db = require('./db')
 const uuidgen = require('uuid/v4');
 const urllib = require('url')
 const path = require('path')
@@ -13,8 +12,6 @@ window.eval = global.eval = function () {
 document.addEventListener('DOMContentLoaded', function () {
     console.log("update init")
 
-    db.database_init()
-    monitor_init()
 })
 
 function log(data) {
