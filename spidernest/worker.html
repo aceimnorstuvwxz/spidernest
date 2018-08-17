@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>worker</title>
+  <title>模块运行器</title>
+  <link href="libs/iconfont.css" rel="stylesheet"/>
   <script type="text/javascript" src="libs/jquery.js" onload="window.$ = window.jQuery = module.exports;"></script>
   <script src="worker.js"></script>
 </head>
@@ -13,10 +14,11 @@
     html, body{
       margin: 0px;
       padding: 0px;
+      overflow: hidden;
     }
     #total{
       display: grid;
-      grid-template-rows: 30px 1fr 1fr;
+      grid-template-rows: 30px 1fr 300px;
       min-height: 100vh;
     }
 
@@ -49,20 +51,33 @@
     .log-area-content{
       padding: 5px;
       padding-left: 15px;
-    }
-
-    #web_list{
+      height: 260px;
+      overflow: scroll;
     }
 
     #web_list>webview{
       height: 100%;
       width: 100%
     }
+
+    .log-line{
+      min-height: 10px;
+    }
+
+    .flex-push{
+      flex-grow: 1;
+    }
   </style>
   <div id="total">
     <header>
       <div class="header-item">
         <span id="solution_name"></span>/<span id="module_name">test module abc</span>
+      </div>
+
+      <div class="flex-push"></div>
+
+      <div class="header-item" id="btn_open_dev">
+        <i class="iconfont icon-console"></i>
       </div>
     </header>
     <div id="web_list">
@@ -71,13 +86,11 @@
       <div id="log_out" class="log-area">
         <div class="log-area-head">外部Log</div>
         <div class="log-area-content" id="out_log">
-            out log
         </div>
       </div>
       <div id="log_in" class="log-area" style="border-left: none;">
         <div class="log-area-head">内部Log</div>
         <div class="log-area-content" id="in_log">
-            inner log
         </div>
       </div>
     </footer>

@@ -54,30 +54,39 @@ function send_cmd(data) {
 
 function init_general() {
 
+    $('#btn_open_dev').click(()=>{
+        electron.remote.getCurrentWindow().openDevTools()
+    })
 }
 
 let g_out_log_queue = []
 function log_out(...theArgs) {
-    let line = $('<p class="log-line"></p>')
-    line.text(theArgs.join(','))
+    _irr.raw_log(theArgs.join(','))
+    let line = $('<div class="log-line"></div>')
+    line.text(new Date().toLocaleTimeString() + ' ' + theArgs.join(','))
     line.appendTo('#out_log')
     g_out_log_queue.push(line)
     if (g_out_log_queue.length > 100) {
         g_out_log_queue[0].remove()
         g_out_log_queue.shift()
     }
+    let objDiv = document.getElementById('out_log')
+    objDiv.scrollTop = objDiv.scrollHeight;
 }
 
 let g_in_log_queue = []
 function log_in(...theArgs) {
-    let line = $('<p class="log-line"></p>')
-    line.text(theArgs.join(','))
+    let line = $('<div class="log-line"></div>')
+    line.text(new Date().toLocaleTimeString() + ' ' + theArgs.join(','))
     line.appendTo('#in_log')
     g_in_log_queue.push(line)
     if (g_in_log_queue.length > 100) {
         g_in_log_queue[0].remove()
         g_in_log_queue.shift()
     }
+
+    let objDiv = document.getElementById('in_log')
+    objDiv.scrollTop = objDiv.scrollHeight;
 }
 function test_out_function() {
     log_out('test out function')
@@ -88,6 +97,7 @@ function init_after_get_module() {
     $('#solution_name').text(g_solution.name)
     $('#module_name').text(g_module.name)
 
+    $('head>title').text(g_solution.name + '/'+g_module.name)
 
     log_out('get module:', g_module.name)
     
@@ -101,7 +111,19 @@ function init_after_get_module() {
         }
     })
     log_out('set up listener loop')
-    _irr.eval(g_module.codeout)
+
+    let code_to_eval = `
+    try
+  {
+  ${g_module.codeout}
+  }
+catch(err)
+  {
+  console.log('[Exception]', err)
+  }
+  `
+
+    _irr.eval(code_to_eval)
 }
 
 //想外部代码释放的接口
