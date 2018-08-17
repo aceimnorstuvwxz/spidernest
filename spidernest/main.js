@@ -289,6 +289,10 @@ ipcMain.on('open-main-window', function (e, data) {
     }
 })
 
+ipcMain.on('router', (e, data)=>{
+    main_utils.notify_all_windows(data.solution_id, data.data)
+})
+
 /* ABOUT */
 let aboutWindow;//win32
 
@@ -463,22 +467,49 @@ ipcMain.on('get-module-to-play', (e, worker_id) => {
         g_wait_to_play_module_queue.shift()
         db.db_get_module(module_id, (module)=>{
             dump_module_preload(module)
-            main_utils.notify_all_windows('module-to-play', {module: module, worker_id: worker_id})
+            db.db_get_solution_by_id(module.solution_id, (solution)=>{
+                main_utils.notify_all_windows('module-to-play', {module: module, solution: solution, worker_id: worker_id})
+            })
         })
     } else {
-        main_utils.notify_all_windows('module-to-play', {module: null, worker_id: worker_id})
+        main_utils.notify_all_windows('module-to-play', {module: null, solution: null, worker_id: worker_id})
     }
 })
 
 //module_preload的前置代码
 let g_module_preload_preset_code = `
+const electron = require('electron')
+const g_solution_id = '%solution_id%'
 console.log('this is preload preset code')
 window._irr_raw_log = window.console.log
 window.console.log = (...args)=>{
     window._irr_raw_log(args.join(','))
 }
 
-console.log('this is preload preset code', 'second  param')
+electron.ipcRenderer.on(g_solution_id, (e, data)=>{
+    if (data.cmd) {
+        if (_snapi.listener_map.has(data.cmd)){
+            _snapi.listener_map.get(data.cmd).forEach(callback=>{
+                callback(data.data)
+            })
+        }
+    }
+})
+
+window._snapi = {} 
+
+_snapi.send = (cmd, data)=>{
+    electron.ipcRenderer.send('router', {solution_id: g_solution_id, data: {cmd:cmd, data:data}})
+}
+
+_snapi.listener_map = new Map()
+_snapi.on = (cmd, listener)=>{
+    if (!_snapi.listener_map.has(cmd)) {
+        _snapi.listener_map.set(cmd, [])
+    }
+    _snapi.listener_map.get(cmd).push(listener)
+}
+
 `
 function dump_module_preload(module) {
 
@@ -490,7 +521,7 @@ function dump_module_preload(module) {
 
     let preload_fn = path.join(preload_dir, module.id + '.js')
     console.log("dump preload, ", preload_fn)
-    fs.writeFileSync(preload_fn, g_module_preload_preset_code + module.codein)
+    fs.writeFileSync(preload_fn, g_module_preload_preset_code.replace('%solution_id%', module.solution_id) + module.codein)
 }
 
 let g_module_window_map = {}

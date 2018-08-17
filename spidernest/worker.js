@@ -24,11 +24,13 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 let g_module = null
+let g_solution = null
 electron.ipcRenderer.on("module-to-play", (e, data) => {
     if (data.worker_id == g_worker_id) {
         console.log('module-to-play', data)
         //这是我们的
         g_module = data.module
+        g_solution = data.solution
         if (!g_module) {
             alert('[Err worker-01]未找到模块数据')
         }
@@ -83,15 +85,27 @@ function test_out_function() {
 
 function init_after_get_module() {
     //获得module之后执行
+    $('#solution_name').text(g_solution.name)
     $('#module_name').text(g_module.name)
-    $('#module_id').text(g_module.id.slice(0, 8))
 
-    log_out('获得', g_module.name)
+
+    log_out('get module:', g_module.name)
+    
+    electron.ipcRenderer.on(g_solution.id, (e, data)=>{
+        if (data.cmd) {
+            if (_snapi.listener_map.has(data.cmd)){
+                _snapi.listener_map.get(data.cmd).forEach(callback=>{
+                    callback(data.data)
+                })
+            }
+        }
+    })
+    log_out('set up listener loop')
     _irr.eval(g_module.codeout)
 }
 
 //想外部代码释放的接口
-window._sn_out = {} //spider nest out API hub
+window._snapi = {} 
 _snapi.load_new_webview = () => {
     console.log('load new webview')
     let prelaod_fn = urllib.format({
@@ -128,4 +142,16 @@ _snapi.load_new_webview = () => {
     })
 
     return web_raw
+}
+
+_snapi.send = (cmd, data)=>{
+    electron.ipcRenderer.send('router', {solution_id: g_solution.id, data: {cmd:cmd, data:data}})
+}
+
+_snapi.listener_map = new Map()
+_snapi.on = (cmd, listener)=>{
+    if (!_snapi.listener_map.has(cmd)) {
+        _snapi.listener_map.set(cmd, [])
+    }
+    _snapi.listener_map.get(cmd).push(listener)
 }

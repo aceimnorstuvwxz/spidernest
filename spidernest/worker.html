@@ -24,9 +24,10 @@
       display: flex;
       background: rgb(250, 197, 255);
       border: 1px solid #333;
+      align-items: center;
     }
 
-    header>span{
+    .header-item{
       padding: 5px;
       margin: 0px 5px;
     }
@@ -60,7 +61,9 @@
   </style>
   <div id="total">
     <header>
-      <span id="module_name">test module abc</span><span id="module_id">123456ABC</span>
+      <div class="header-item">
+        <span id="solution_name"></span>/<span id="module_name">test module abc</span>
+      </div>
     </header>
     <div id="web_list">
     </div>
