@@ -60,7 +60,7 @@ function get_menu_template() {
             label: lg('文件', 'File'),
             submenu: [
                 {
-                    label: lg('新增目标', 'New solution'),
+                    label: lg('新增方案', 'New solution'),
                     accelerator: 'CmdOrCtrl+N',
                     click() {
                         main_utils.notify_all_windows('open-new-solution', {})

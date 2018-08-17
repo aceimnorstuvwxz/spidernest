@@ -75,6 +75,7 @@ select[disabled="disabled"]{
 .head_segments{
     padding: 2px 2px;
     display: flex;
+    align-items: center;
 }
 
 #head_folder{
