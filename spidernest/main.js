@@ -66,10 +66,19 @@ function get_menu_template() {
                         main_utils.notify_all_windows('open-new-solution', {})
                     }
                 },
+                { type: 'separator' },
                 {
-                    label: lg('登录某网站', 'Login to Site'),
+                    label: lg('保存模块', 'Save Module'),
+                    accelerator: 'CmdOrCtrl+S',
                     click() {
-                        openLoginSiteWindow()
+                        main_utils.notify_all_windows('menu-save-module', {})
+                    }
+                },
+                {
+                    label: lg('运行模块', 'Run Module'),
+                    accelerator: 'CmdOrCtrl+R',
+                    click() {
+                        main_utils.notify_all_windows('menu-play-module', {})
                     }
                 }
             ]
@@ -206,7 +215,6 @@ function get_menu_template() {
         menuTemplate.push({
             label: 'Dev',
             submenu: [
-                { role: 'reload' },
                 { role: 'forcereload' },
                 { role: 'toggledevtools' },
                 {

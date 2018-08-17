@@ -448,7 +448,7 @@ function on_select_module(module_id) {
     g_dirty = false
     refresh_save_dirty()
 }
-
+electron.ipcRenderer.on('menu-save-module', on_click_save_module)
 function on_click_save_module() {
     console.log('save module')
     if (g_selected_module_element) {
@@ -477,6 +477,7 @@ function on_module_name_change() {
     }
 }
 
+electron.ipcRenderer.on('menu-play-module', on_click_play_module)
 function on_click_play_module() {
     if (g_selected_module_element) {
         electron.ipcRenderer.send('play-module', g_selected_module_element.web_module.id)
