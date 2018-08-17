@@ -465,6 +465,7 @@ ipcMain.on('get-solution-to-edit', (e) => {
 let g_wait_to_play_module_queue = []
 ipcMain.on('play-module', (e, module_id) => {
     g_wait_to_play_module_queue.push(module_id)
+    main_utils.notify_all_windows('close-module-window', module_id) //先关闭原来的窗口
     openNewModuleWindow()
 })
 
@@ -486,7 +487,11 @@ ipcMain.on('get-module-to-play', (e, worker_id) => {
 
 //module_preload的前置代码
 let g_module_preload_preset_code = `
-const electron = require('electron')
+console.log('start preload')
+const electron = require('electron');
+//const Store = require('electron-store');
+//const _store = new Store();
+
 const g_solution_id = '%solution_id%'
 console.log('this is preload preset code')
 window._irr_raw_log = window.console.log
@@ -506,7 +511,7 @@ electron.ipcRenderer.on(g_solution_id, (e, data)=>{
 
 window._snapi = {} 
 
-_snapi.send = (cmd, data)=>{
+_snapi.send = (cmd, data=null)=>{
     electron.ipcRenderer.send('router', {solution_id: g_solution_id, data: {cmd:cmd, data:data}})
 }
 
@@ -537,8 +542,10 @@ let g_module_window_map = {}
 function openNewModuleWindow() {
 
     let win_option = {
-        width: 700,
-        height: 700
+        width: 1000,
+        height: 500,
+        x:0,
+        y:0
     }
 
     let tmp_win = new BrowserWindow(win_option)

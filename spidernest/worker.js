@@ -4,6 +4,9 @@ const uuidgen = require('uuid/v4');
 const urllib = require('url')
 const path = require('path')
 const { URL } = require('url')
+const Store = require('electron-store');
+const _store = new Store();
+const fs = require('fs')
 
 window._irr = {}
 _irr.eval = global.eval
@@ -41,16 +44,11 @@ electron.ipcRenderer.on("module-to-play", (e, data) => {
     }
 })
 
-
-function log(data) {
-    if (utils.is_dev) {
-        electron.ipcRenderer.send('log', data)
+electron.ipcRenderer.on('close-module-window', (e, module_id) => {
+    if (module_id == g_module.id) {
+        window.close()
     }
-}
-
-function send_cmd(data) {
-    electron.ipcRenderer.send('cmd', data)
-}
+})
 
 function init_general() {
 
@@ -61,7 +59,7 @@ function init_general() {
 
 let g_out_log_queue = []
 function log_out(...theArgs) {
-    _irr.raw_log(theArgs.join(','))
+    _irr.raw_log(theArgs.join(','), theArgs)
     let line = $('<div class="log-line"></div>')
     line.text(new Date().toLocaleTimeString() + ' ' + theArgs.join(','))
     line.appendTo('#out_log')
@@ -87,9 +85,6 @@ function log_in(...theArgs) {
 
     let objDiv = document.getElementById('in_log')
     objDiv.scrollTop = objDiv.scrollHeight;
-}
-function test_out_function() {
-    log_out('test out function')
 }
 
 function init_after_get_module() {
@@ -128,7 +123,7 @@ catch(err)
 
 //想外部代码释放的接口
 window._snapi = {} 
-_snapi.load_new_webview = () => {
+_snapi.load_webview = (address) => {
     console.log('load new webview')
     let prelaod_fn = urllib.format({
         pathname: path.join(utils.get_userData(), 'module_preloads', g_module.id + '.js'),
@@ -136,7 +131,7 @@ _snapi.load_new_webview = () => {
         slashes: true
     })
 
-    let webview = $(`<webview preload="${prelaod_fn}" src="http://www.netqon.com"> </webview>`)
+    let webview = $(`<webview preload="${prelaod_fn}" src="${address}"> </webview>`)
     webview.appendTo('#web_list')
 
     let web_raw = webview.get(0)
@@ -163,10 +158,10 @@ _snapi.load_new_webview = () => {
         }
     })
 
-    return web_raw
+    return webview
 }
 
-_snapi.send = (cmd, data)=>{
+_snapi.send = (cmd, data=null)=>{
     electron.ipcRenderer.send('router', {solution_id: g_solution.id, data: {cmd:cmd, data:data}})
 }
 
@@ -177,3 +172,12 @@ _snapi.on = (cmd, listener)=>{
     }
     _snapi.listener_map.get(cmd).push(listener)
 }
+_snapi.store = {}
+_snapi.store.get = (key, default_value)=>{
+    return _store.get(g_solution.id + '_' + key, default_value)
+}
+_snapi.store.set = (key, value)=>{
+    _store.set(g_solution.id + '_' + key, value)
+}
+
+_snapi.fs = fs
