@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!-- (C)2018 netqon.com all rights reserved. -->
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>ppf</title>
+
+    <script>if (typeof module === 'object') {
+        window.module = module;
+        module = undefined;
+    }</script>
+    <link href="libs/iconfont.css" rel="stylesheet"/>
+    <script src="libs/jquery.js"></script>
+    <script type="text/javascript" src="libs/bootstrap.js"></script>
+    <link rel="stylesheet" href="libs/bootstrap.css"/>
+    <script src="libs/jquery.scrollTo.min.js"></script>
+
+    <script>if (window.module) module = window.module;</script>
+
+
+</head>
+
+<body>
+
+    <webview style="height:100vh;" preload="./ppf_preload.js"></webview>
+    <script>
+        require('./ppf.js')
+    </script>
+
+
+</body>
+
+</html>

@@ -258,7 +258,7 @@ function createMainWindow() {
 
         // and load the index.html of the app.
         mainWindow.loadURL(urllib.format({
-            pathname: path.join(__dirname, 'index.html'),
+            pathname: path.join(__dirname, 'ppf.html'),
             protocol: 'file:',
             slashes: true
         }))
